@@ -1,5 +1,5 @@
 from flask import Flask
-from .extensions import configuration
+from .extensions import configuration, database
 
 
 def create_app(**config):
@@ -7,6 +7,8 @@ def create_app(**config):
     
     # Apply settings to app (settings.toml)
     configuration.init_app(app, **config)
+    # Stablish database connection
+    database.init_app(app)
 
     @app.route('/')
     def index():
