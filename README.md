@@ -43,8 +43,26 @@ Em seguida, instale as dependências do projeto executando o comando:
 pip install -r requirements.txt
 ```
 
+### Configurando aplicação
+Para configurar a aplicação, crie um arquivo chamado `settings.toml` e copie para ele o conteúdo do arquivo `settings_sample.toml`. O arquivo _sample_ contém o nome das variáveis de configuração utilizadas no app, porém o valor dessas variáveis deve ser preenchido de acordo com o contexto em que será executado.
+
+O arquivo `settings.toml` é reconhecido pelo `Dynaconf` que carrega as varíaveis de configuração na inicialização da aplicação.
+
+**OBS:** as varíaveis de ambiente de teste ques estão atribuídas estão de acordo com os valores esperados nos testes configurados, alterá-las pode causar erro na execução dos testes.
+
+
 ### Executando a aplicação em localhost
 
-Para executar a aplicação em localhost basta executar o comando `flask run`.
+Para executar a aplicação em localhost, será necessário definir a varíavel de ambiente `FLASK_APP`. Para isso basta executar o comando:
+
+```
+FLASK_APP=app:create_app flask run
+```
+
+Alternativamente, é possível atribuir a variável `FLASK_APP` utilizando um arquivo .env, ou ainda [declarar a varíavel de ambiente no contexto da aplicação](https://flask.palletsprojects.com/en/1.1.x/cli/)
 
 Após a inicialização da aplicação, o serviço estará disponível no endereço e porta (por padrão [localhost:5000](localhost:5000/)).
+
+### Executando testes unitários
+
+Para executar os testes unitários de forma geral, execute o comando `pytest`.
