@@ -1,3 +1,6 @@
 .vscode
 /venv
 __pycache__
+settings.toml
+.pytest_cache
+.env
