@@ -1,8 +1,11 @@
 from flask import Flask
 
 
-app = Flask(__name__)
+def create_app(**config):
+    app = Flask(__name__)
+    
+    @app.route('/')
+    def index():
+        return 'This is a sample of SambaTech Media API'
 
-@app.route('/')
-def index():
-    return 'This is a sample of SambaTech Media API'
+    return app
