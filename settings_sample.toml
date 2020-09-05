@@ -1,0 +1,8 @@
+[default]
+
+[testing]
+ENV_STATUS = 'On Testing'
+
+[development]
+
+[production]
