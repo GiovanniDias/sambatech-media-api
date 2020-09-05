@@ -1,5 +1,6 @@
 from flask import Flask
 from .extensions import configuration, database
+from .blueprints import api
 
 
 def create_app(**config):
@@ -9,9 +10,7 @@ def create_app(**config):
     configuration.init_app(app, **config)
     # Stablish database connection
     database.init_app(app)
-
-    @app.route('/')
-    def index():
-        return 'This is a sample of SambaTech Media API'
+    # Set api routes
+    api.init_app(app)
 
     return app
