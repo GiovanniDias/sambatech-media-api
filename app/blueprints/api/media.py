@@ -1,6 +1,9 @@
-from flask import Blueprint, request, make_response, jsonify
+from flask import Blueprint, request, make_response, jsonify, Response
+from sqlalchemy.exc import IntegrityError
+from datetime import datetime, date
 from ...extensions.database import db
 from ...models.media import Media
+from ...helper import check_required_parameters
 
 
 bp = Blueprint("medias", __name__, url_prefix="/medias")
@@ -22,7 +25,47 @@ def medias():
         return response
     
     elif request.method == 'POST':
-        return 'Insert media'
+        try:
+            data = request.json
+        except BaseException:
+            message = "No valid informed data."
+            response = make_response(message, 400)
+            return response
+        
+        try:
+            check_required_parameters(data)
+        except KeyError as e:
+            arg = e.args[0].get('arg')
+            message = "Required field '{}' is null or invalid.".format(arg)
+            response = make_response(message, 400)
+            return response
+        except ValueError:
+            message = "Invalid date format. Expected YYYY-mm-dd string format."
+            response = make_response(message, 400)
+            return response
+
+        try:
+            upload_date = data['upload_date']
+            dt = datetime.strptime(upload_date, "%Y-%m-%d")
+            data['upload_date'] = date(dt.year,dt.month,dt.day)
+
+            new_media = Media(**data)
+            
+            db.session.add(new_media)
+            db.session.commit()
+            
+            response = make_response({'id': new_media.id}, 200)
+
+        except IntegrityError:
+            message = "There already has a media with the informed url."
+            response = make_response(message, 400)
+            return response
+
+        except BaseException:
+            response = Response(status=400)
+            response.headers['Content-Type'] = 'application/json'
+
+        return response
 
 
 @bp.route('/<int:id>', methods=['GET', 'PUT', 'DELETE'])
