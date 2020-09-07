@@ -10,14 +10,13 @@ def app():
         yield app
 
 
-@pytest.fixture
+@pytest.fixture(scope="session")
 def client(app):
     return app.test_client()
 
 
-@pytest.fixture
+@pytest.fixture(scope="session")
 def db(app):
-    # with app.app_context():
     database.db.create_all()
     yield database.db
     database.db.drop_all()
