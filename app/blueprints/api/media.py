@@ -50,7 +50,6 @@ def medias():
             data['upload_date'] = date(dt.year,dt.month,dt.day)
 
             new_media = Media(**data)
-            
             db.session.add(new_media)
             db.session.commit()
             
@@ -71,7 +70,16 @@ def medias():
 @bp.route('/<int:id>', methods=['GET', 'PUT', 'DELETE'])
 def media(id):
     if request.method == 'GET':
-        return 'Get media with id {}'.format(id)
+        media = Media.query.get(id)
+        result = jsonify(media)
+
+        if media is not None:
+            response = make_response(result, 200)
+        else:
+            response = Response(status=404)
+            response.headers['Content-Type'] = 'application/json'
+
+        return response
 
     elif request.method == 'PUT':
         return 'Update media with id {}'.format(id)
