@@ -34,5 +34,5 @@ def media():
         id = 1,
         name = "Test video",
         duration = 100,
-        url="http://samba_videos/test_video.mp4"
+        url = "http://samba_videos/test_video.mp4",
     )
