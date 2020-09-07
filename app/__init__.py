@@ -1,5 +1,5 @@
 from flask import Flask
-from .extensions import configuration, database
+from .extensions import configuration, database, commands
 from .blueprints import api
 
 
@@ -12,5 +12,7 @@ def create_app(**config):
     database.init_app(app)
     # Set api routes
     api.init_app(app)
+    # Set custom app commands
+    commands.init_app(app)
 
     return app
