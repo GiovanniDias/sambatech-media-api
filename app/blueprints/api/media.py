@@ -3,7 +3,8 @@ from sqlalchemy.exc import IntegrityError
 from datetime import datetime, date
 from ...extensions.database import db
 from ...models.media import Media
-from ...helper import check_required_parameters
+from ...helper import (check_required_parameters, error_message,
+    validate_date_format, format_upload_date)
 
 
 bp = Blueprint("medias", __name__, url_prefix="/medias")
@@ -18,8 +19,8 @@ def medias():
             medias = Media.query.all()
         else:
             medias = Media.query.filter_by(deleted=False).all()
+        
         result = jsonify(medias)
-
         response = make_response(result, 200)
 
         return response
@@ -28,41 +29,31 @@ def medias():
         try:
             data = request.json
         except BaseException:
-            message = "No valid informed data."
-            response = make_response(message, 400)
-            return response
+            return error_message("No valid informed data.")
         
         try:
             check_required_parameters(data)
+            validate_date_format(data.get('upload_date'))
         except KeyError as e:
             arg = e.args[0].get('arg')
-            message = "Required field '{}' is null or invalid.".format(arg)
-            response = make_response(message, 400)
-            return response
+            return error_message("Required field '{}' is null or invalid.".format(arg))
+            
         except ValueError:
-            message = "Invalid date format. Expected YYYY-mm-dd string format."
-            response = make_response(message, 400)
-            return response
+            return error_message("Invalid date format. Expected YYYY-mm-dd string format.")
 
         try:
-            upload_date = data['upload_date']
-            dt = datetime.strptime(upload_date, "%Y-%m-%d")
-            data['upload_date'] = date(dt.year,dt.month,dt.day)
-
+            data['upload_date'] = format_upload_date(data.get('upload_date'))
             new_media = Media(**data)
             db.session.add(new_media)
             db.session.commit()
-            
-            response = make_response({'id': new_media.id}, 200)
+
+            response = make_response({'id': new_media.id}, 201)
 
         except IntegrityError:
-            message = "There already has a media with the informed url."
-            response = make_response(message, 400)
-            return response
+            return error_message("There already has a media with the informed url.")
 
-        except BaseException:
-            response = Response(status=400)
-            response.headers['Content-Type'] = 'application/json'
+        except BaseException as e:
+            return error_message(e)
 
         return response
 

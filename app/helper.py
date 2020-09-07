@@ -1,4 +1,5 @@
-from datetime import datetime
+from datetime import datetime, date
+from flask import make_response
 
 
 def check_required_parameters(data):
@@ -7,9 +8,20 @@ def check_required_parameters(data):
     for param in params:
         if not bool(data.get(param)):
             raise KeyError({"arg": param})
-        elif param == 'upload_date':
-            try:
-                datetime.strptime(data.get(param), "%Y-%m-%d")
-            except (TypeError, ValueError):
-                raise ValueError
+                
 
+def validate_date_format(date):
+    try:
+        datetime.strptime(date, "%Y-%m-%d")
+    except (TypeError, ValueError):
+        raise ValueError
+
+
+def format_upload_date(upload_date):
+    dt = datetime.strptime(upload_date, "%Y-%m-%d")
+    return date(dt.year,dt.month,dt.day)
+
+
+def error_message(message, status_code=400):
+    return make_response(message, status_code)
+    
