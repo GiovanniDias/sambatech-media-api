@@ -1,0 +1,10 @@
+[default]
+# SQLALCHEMY_DATABASE_URI = ''
+
+[testing]
+ENV_STATUS = 'On Testing'
+SQLALCHEMY_DATABASE_URI = 'sqlite:///test.db'
+
+[development]
+
+[production]
