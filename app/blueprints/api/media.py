@@ -87,7 +87,7 @@ def media(id):
             db.session.add(media)
             db.session.commit()
 
-            response = Response(status=200)
+            response = Response(status=204)
             response.headers['Content-Type'] = 'application/json'
         else:
             response = Response(status=404)
@@ -97,4 +97,17 @@ def media(id):
 
 
     elif request.method == 'DELETE':
-        return 'Delete media with id {}'.format(id)
+        media = Media.query.get(id)
+
+        if media is not None:    
+            media.deleted = True
+            db.session.add(media)
+            db.session.commit()
+    
+            response = Response(status=200)
+            response.headers['Content-Type'] = 'application/json'
+        else:
+            response = Response(status=404)
+            response.headers['Content-Type'] = 'application/json'
+
+        return response
