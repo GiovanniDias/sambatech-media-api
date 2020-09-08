@@ -48,15 +48,20 @@ def test_update_media(client, db, media_payload_functional):
         upload_date = datetime.now().date().isoformat()
     )
     response = client.put('/medias/{id}'.format(id=payload.get('id')), json=payload)
-    assert response.status_code == 200
+    assert response.status_code == 204
 
 
 @pytest.mark.parametrize('id', [1, 2])
 def test_delete_media(client, id, db, media_payload_functional):
-    media = client.get('/medias/').json
+    media = client.get('/medias/{id}'.format(id=id)).json
     
     if not media:
         test_add_media(client, db, media_payload_functional)
 
     response = client.delete(f'/medias/{id}')
     assert response.status_code == 200
+    
+    media = client.get('/medias/{id}'.format(id=id)).json
+    assert media.get('deleted')
+
+

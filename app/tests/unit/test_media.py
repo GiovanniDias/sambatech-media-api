@@ -52,7 +52,7 @@ def test_update_media(client, db):
         name = "Test video update"
     )
     response = client.put('/medias/{id}'.format(id=payload.get('id')), json=payload)
-    assert response.status_code == 200
+    assert response.status_code == 204
 
 
 @pytest.mark.parametrize('id', [1, 2])
