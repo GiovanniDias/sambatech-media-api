@@ -73,7 +73,28 @@ def media(id):
         return response
 
     elif request.method == 'PUT':
-        return 'Update media with id {}'.format(id)
+        media = Media.query.get(id)
+
+        if media is not None:
+            data = request.json
+
+            for key in data.keys():
+                if key == 'upload_date':
+                    validate_date_format(data[key])
+                    data[key] = format_upload_date(data[key])
+                setattr(media, key, data[key])
+
+            db.session.add(media)
+            db.session.commit()
+
+            response = Response(status=200)
+            response.headers['Content-Type'] = 'application/json'
+        else:
+            response = Response(status=404)
+            response.headers['Content-Type'] = 'application/json'
+
+        return response
+
 
     elif request.method == 'DELETE':
         return 'Delete media with id {}'.format(id)
