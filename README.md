@@ -1,5 +1,5 @@
 # Media API
-Esse repositório deverá conter um exemplo de API para gerenciamento das mídias em vídeo da SambaTech.
+Esse repositório contém uma API de exemplo para gerenciamento das mídias em vídeo da SambaTech.
 
 ## Como rodar a aplicação
 
@@ -13,15 +13,15 @@ Esse repositório deverá conter um exemplo de API para gerenciamento das mídia
 
 ### Obtendo o código fonte
 
-Primeiramente, é necessário obter o código fonte do projeto, realizando o download do projeto ou clonando o projeto ao executar o comando abaixo via linha de comando (é necessário ter o [git](https://git-scm.com/downloads) instalado):
+Primeiramente, é necessário obter o código fonte do projeto, realizando o [download do projeto](https://github.com/GiovanniDias/sambatech-media-api/archive/master.zip) ou clonando o projeto ao executar o comando abaixo via linha de comando (é necessário ter o [git](https://git-scm.com/downloads) instalado):
 
 ```
-git clone https://github.com/GiovanniDias/media-api
+git clone https://github.com/GiovanniDias/sambatech-media-api
 ```
 
 ### Configurando o ambiente
 
-Para isolar a aplicação, as dependências do projeto e as variáveis de ambiente por ele utilizadas do contexto do sistema operacional, iremos configurar um ambiente virtual onde a aplicação irá rodar. 
+Para isolar a aplicação, as dependências do projeto e as variáveis de ambiente por ele utilizadas no contexto da aplicação, iremos configurar um ambiente virtual onde a esta irá rodar. 
 
 _Os passos a seguir consideram você já tem Python 3, pip e virtualenv instalados._
 
@@ -43,7 +43,7 @@ Em seguida, instale as dependências do projeto executando o comando:
 pip install -r requirements.txt
 ```
 
-### Configurando aplicação
+### Configurando a aplicação
 Para configurar a aplicação, crie um arquivo chamado `settings.toml` e copie para ele o conteúdo do arquivo `settings_sample.toml`. O arquivo _sample_ contém o nome das variáveis de configuração utilizadas no app, porém o valor dessas variáveis deve ser preenchido de acordo com o contexto em que será executado.
 
 O arquivo `settings.toml` é reconhecido pelo `Dynaconf` que carrega as varíaveis de configuração na inicialização da aplicação.
