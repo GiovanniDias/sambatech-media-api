@@ -51,6 +51,23 @@ O arquivo `settings.toml` é reconhecido pelo `Dynaconf` que carrega as varíave
 **OBS:** as varíaveis de ambiente de teste ques estão atribuídas estão de acordo com os valores esperados nos testes configurados, alterá-las pode causar erro na execução dos testes.
 
 
+### Criando base de dados
+
+Para gerenciar a base de dados localmente, utilize os comandos abaixo:
+
+```
+// Criar base de dados
+flask create-db
+
+
+// Remover base de dados
+flask drop-db
+
+// Recriar a base de dados
+// (drop-db seguido de create-db)
+flask recreate-db
+```
+
 ### Executando a aplicação em localhost
 
 Para executar a aplicação em localhost, será necessário definir a varíavel de ambiente `FLASK_APP`. Para isso basta executar o comando:
